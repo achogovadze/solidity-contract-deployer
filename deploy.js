@@ -9,3 +9,16 @@ const infuraUrl =
 
 const provider = new HDWalletProvider(mnemonic, infuraUrl);
 const web3 = new Web3(provider);
+
+const deploy = async () => {
+  const accounts = await web3.eth.getAccounts();
+
+  const result = await new web3.eth.Contract(JSON.parse(interface))
+    .deploy({ data: bytecode, arguments: ["Initial"] })
+    .send({ gas: "1000000", from: accounts[0] });
+
+  console.log("Contract - ", result.options.address);
+  provider.engine.stop();
+};
+
+deploy();
